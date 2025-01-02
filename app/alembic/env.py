@@ -11,7 +11,8 @@ from os.path import dirname, abspath
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
 from app.db import DB_URL, Base
-from app.Questions.models import Question, Choice
+from app.questions.models import Question, Choice
+from app.users.models import User
 
 config = context.config
 config.set_main_option("sqlalchemy.url", DB_URL)
