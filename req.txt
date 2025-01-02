@@ -1,0 +1,6 @@
+fastapi[all]
+SQLAlchemy
+asyncpg
+python-jose
+bcrypt==4.0.1
+passlib[bcrypt]
