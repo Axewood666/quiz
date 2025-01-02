@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, text, Text
+from sqlalchemy import ForeignKey, text, Text, Boolean
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from app.db import Base, str_uniq, int_pk
 
@@ -14,5 +14,5 @@ class Choice(Base):
     id: Mapped[int_pk]
     question_id: Mapped[int] = mapped_column(ForeignKey("questions.id"))
     choice: Mapped[str] = mapped_column(nullable=False)
-    
+    true_answer: Mapped[bool] = mapped_column(Boolean, default=False)
     question = relationship("Question", back_populates="choices")

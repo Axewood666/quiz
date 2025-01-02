@@ -5,7 +5,7 @@ from typing import Annotated
 
 DB_URL = get_db_url()
 engine = create_async_engine(DB_URL)
-session_maker = async_sessionmaker(engine, expire_on_commit=False)
+session_maker = async_sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 str_uniq = Annotated[str, mapped_column(unique=True, nullable=False)]
 int_pk = Annotated[int, mapped_column(primary_key=True)]
