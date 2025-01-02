@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: yourusername
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: yourdatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build:
+      context: .
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: yourdatabase
+      DB_USER: yourusername
+      DB_PASSWORD: yourpassword
+      SECRET_KEY: supersecretkey
+      ALGORITHM: HS256
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
