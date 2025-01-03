@@ -1,8 +1,7 @@
 from sqlalchemy.orm import Session
 from app.db import session_maker
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import or_, select
-
+from sqlalchemy import or_, select, delete
 
 class BaseDAO:
     model = None
@@ -19,12 +18,14 @@ class BaseDAO:
                     await session.rollback()
                     raise e
                 return new_instance
+
     @classmethod
     async def find_all(cls, **filter_by):
         async with session_maker() as session:
             query = select(cls.model).filter_by(**filter_by)
             result = await session.execute(query)
             return result.scalars().all()
+
     @classmethod
     async def find_one_or_none(cls, **filter_by):
         async with session_maker() as session:
@@ -42,3 +43,14 @@ class BaseDAO:
             query = select(cls.model).where(or_(*conditions))
             result = await session.execute(query)
             return result.scalar_one_or_none()
+
+    @classmethod
+    async def delete_all(cls, **filter_by):
+        async with session_maker() as session:
+            try:
+                query = delete(cls.model).filter_by(**filter_by)
+                result = await session.execute(query)
+                await session.commit()
+            except SQLAlchemyError as e:
+                await session.rollback()
+            return result.rowcount

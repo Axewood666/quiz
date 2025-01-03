@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const quizData = await response.json();
             renderQuiz(quizData, quizContainer);
 
-            // Добавляем кнопку для отправки ответов
             const submitButton = document.createElement('button');
             submitButton.textContent = 'Submit Answers';
             submitButton.addEventListener('click', () => submitAnswers(quizData));
@@ -86,7 +85,7 @@ function submitAnswers(quizData) {
 
 function renderResults(results) {
     const resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = ''; // Очистить предыдущие результаты, если они есть
+    resultsContainer.innerHTML = '';
 
     results.forEach(result => {
         const resultElement = document.createElement('div');
@@ -112,3 +111,26 @@ function renderResults(results) {
         resultsContainer.appendChild(resultElement);
     });
 }
+
+
+    document.getElementById('refresh-btn').addEventListener('click', function() {
+        fetch('/quiz/get-quiz?refresh_session=true')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                const quizContainer = document.getElementById('quiz');
+                quizContainer.innerHTML = '';
+                renderQuiz(data, quizContainer);
+                 const submitButton = document.createElement('button');
+                submitButton.textContent = 'Submit Answers';
+                submitButton.addEventListener('click', () => submitAnswers(quizData));
+                quizContainer.appendChild(submitButton);
+            })
+            .catch(error => console.error('Ошибка при обновлении вопросов:', error));
+    });
+

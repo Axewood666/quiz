@@ -68,3 +68,28 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+.refresh-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.refresh-btn {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.refresh-btn:hover {
+    background-color: #0056b3;
+}
+
