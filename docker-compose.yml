@@ -13,8 +13,7 @@ services:
       - "5432:5432"
 
   app:
-    build:
-      context: .
+    image: axewood666/quiz_app:latest
     environment:
       DB_HOST: db
       DB_PORT: 5432
