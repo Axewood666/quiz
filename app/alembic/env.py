@@ -11,7 +11,7 @@ from os.path import dirname, abspath
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
 from app.db import DB_URL, Base
-from app.questions.models import Question, Choice
+from app.questions.models import Question, Choice, UserQuizSession, UserAnswer
 from app.users.models import User
 
 config = context.config

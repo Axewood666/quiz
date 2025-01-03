@@ -8,7 +8,7 @@ from sqlalchemy import select, func
 from app.db import session_maker
 from app.dao.base import BaseDAO
 from app.users.models import User
-from app.questions.models import UserQuizSession, Choice, Question
+from app.questions.models import UserQuizSession, Choice, Question, UserAnswer
 from sqlalchemy.orm import joinedload, selectinload
 
 
@@ -62,7 +62,11 @@ class QuizSessionDAO(BaseDAO):
     @classmethod
     async def get_rand_quiz(cls, current_user: User):
         async with session_maker() as session:
-            query = select(Question).options(joinedload(Question.choices)).order_by(func.random()).limit(10)
+            query = select(UserAnswer.question_id).where(UserAnswer.user_id == current_user.id)
+            result = await session.execute(query)
+            not_in = result.scalars().all()
+            not_in = list(not_in)
+            query = select(Question).where(Question.id.notin_(not_in)).options(joinedload(Question.choices)).order_by(func.random()).limit(10)
             result = await session.execute(query)
             quiz_questions = result.scalars().unique().all()
             session_id = await QuizSessionDAO.add_quiz_session(current_user=current_user, quiz_questions=quiz_questions)

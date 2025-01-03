@@ -27,3 +27,12 @@ class UserQuizSession(Base):
 
     user = relationship("User")
     question = relationship("Question")
+
+class UserAnswer(Base):
+    id: Mapped[int_pk]
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    question_id: Mapped[int] = mapped_column(ForeignKey("questions.id"))
+
+    user = relationship("User")
+    question = relationship("Question")
+
