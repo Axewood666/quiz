@@ -4,9 +4,8 @@ from pydantic import BaseModel, Field
 
 
 class Choice(BaseModel):
-    id: int = Field(..., description="ID варианта ответа")
     choice: str = Field(..., description="Вариант ответа")
-    true_answer: bool = Field(..., description="Правильный ответ: true или false", exclude=True)
+    true_answer: bool = Field(..., description="Правильный ответ: true или false")
 
 
 class SQuizAdd(BaseModel):

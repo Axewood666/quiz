@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление вопросов для квиза</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Добавление вопросов для квиза</h1>
+
+<div id="questions-container">
+    <div class="question-container">
+        <label>Вопрос: <input type="text" class="question-input"></label>
+        <div class="choices-container">
+            <h4>Выборы:</h4>
+            <button onclick="addChoice(this)">Добавить выбор</button>
+            <div class="choice-input">
+                <input type="text" placeholder="Введите выбор">
+                <label>Правильный ответ: <input type="checkbox" class="true-answer-checkbox"></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button onclick="addQuestion()">Добавить вопрос</button>
+<button onclick="submitQuestions()">Отправить вопросы</button>
+<p>Введите вопросы в формате JSON:</p>
+<textarea id="json-input" rows="20" cols="60"></textarea>
+
+<button onclick="submitQuestions()">Отправить вопросы</button>
+<script>
+    async function submitQuestions() {
+    const jsonInput = document.getElementById('json-input').value;
+
+    try {
+        const questions = JSON.parse(jsonInput);
+
+        const response = await fetch('/quiz/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(questions)
+        });
+
+        if (response.ok) {
+            alert('Вопросы успешно добавлены!');
+        } else {
+            alert('Ошибка при добавлении вопросов.');
+        }
+    } catch (error) {
+        alert('Ошибка: Проверьте правильность введенного JSON.');
+        console.error(error);
+    }
+}
+
+    function addChoice(button) {
+    const questionContainer = button.closest('.question-container');
+    const choicesContainer = questionContainer.querySelector('.choices-container');
+    const newChoiceDiv = document.createElement('div');
+    newChoiceDiv.classList.add('choice-input');
+    newChoiceDiv.innerHTML = `
+        <input type="text" placeholder="Введите выбор">
+        <label>Правильный ответ: <input type="checkbox" class="true-answer-checkbox"></label>
+    `;
+    choicesContainer.appendChild(newChoiceDiv);
+    }
+
+    function addQuestion() {
+        const questionsContainer = document.getElementById('questions-container');
+        const newQuestionDiv = document.createElement('div');
+        newQuestionDiv.classList.add('question-container');
+        newQuestionDiv.innerHTML = `
+            <label>Вопрос: <input type="text" class="question-input"></label>
+            <div class="choices-container">
+                <h4>Выборы:</h4>
+                <button onclick="addChoice(this)">Добавить выбор</button>
+                <div class="choice-input">
+                    <input type="text" placeholder="Введите выбор">
+                    <label>Правильный ответ: <input type="checkbox" class="true-answer-checkbox"></label>
+                </div>
+            </div>
+        `;
+        questionsContainer.appendChild(newQuestionDiv);
+    }
+
+    async function submitQuestions() {
+        const questionElements = document.querySelectorAll('.question-container');
+        const questions = Array.from(questionElements).map(qElement => {
+            const questionText = qElement.querySelector('.question-input').value;
+            const choiceElements = qElement.querySelectorAll('.choice-input');
+            const choices = Array.from(choiceElements).map(cElement => ({
+                choice: cElement.querySelector('input[type="text"]').value,
+                true_answer: cElement.querySelector('.true-answer-checkbox').checked
+            }));
+            return { question: questionText, Choices: choices };
+        });
+
+        try {
+            const response = await fetch('/quiz/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body:
+                JSON.stringify(questions)
+            });
+
+            if (response.ok) {
+                alert('Вопросы успешно добавлены!');
+            } else {
+                alert('Ошибка при добавлении вопросов.');
+            }
+        } catch (error) {
+            console.error('Ошибка соединения с сервером:', error);
+            alert('Не удалось соединиться с сервером.');
+        }
+    }
+</script>
+
+</body>
+</html>

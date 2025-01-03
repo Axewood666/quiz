@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, Depends
-from app.users.dependicies import get_current_user
+from app.users.dependicies import get_current_user, current_user_is_admin
 from app.users.models import User
 from fastapi.templating import Jinja2Templates
 
@@ -19,3 +19,7 @@ async def quiz_page(request: Request):
 @router_pages.get("/login/")
 async def quiz_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
+
+@router_pages.get("/admin/add")
+async def quiz_page(request: Request, current_user: User = Depends(current_user_is_admin)):
+    return templates.TemplateResponse("add_page.html", {"request": request})

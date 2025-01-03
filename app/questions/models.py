@@ -15,6 +15,7 @@ class Choice(Base):
     question_id: Mapped[int] = mapped_column(ForeignKey("questions.id"))
     choice: Mapped[str] = mapped_column(nullable=False)
     true_answer: Mapped[bool] = mapped_column(Boolean, default=False)
+
     question = relationship("Question", back_populates="choices")
 
 
