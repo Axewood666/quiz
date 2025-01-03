@@ -4,9 +4,9 @@ services:
   db:
     image: postgres:14
     environment:
-      POSTGRES_USER: yourusername
-      POSTGRES_PASSWORD: yourpassword
-      POSTGRES_DB: yourdatabase
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -17,11 +17,11 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: 5432
-      DB_NAME: yourdatabase
-      DB_USER: yourusername
-      DB_PASSWORD: yourpassword
-      SECRET_KEY: supersecretkey
-      ALGORITHM: HS256
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      ALGORITHM: ${ALGORITHM}
     depends_on:
       - db
     ports:

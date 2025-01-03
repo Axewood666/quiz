@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const quizContainer = document.getElementById('quiz');
 
     try {
-        const response = await fetch('/quiz/get-quiz', {
+        const response = await fetch('/quiz/get-quiz/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

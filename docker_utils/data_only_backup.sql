@@ -17,7 +17,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: yourusername
+-- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
@@ -26,7 +26,7 @@ COPY public.alembic_version (version_num) FROM stdin;
 
 
 --
--- Data for Name: questions; Type: TABLE DATA; Schema: public; Owner: yourusername
+-- Data for Name: questions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.questions (id, question) FROM stdin;
@@ -50,7 +50,7 @@ COPY public.questions (id, question) FROM stdin;
 
 
 --
--- Data for Name: choices; Type: TABLE DATA; Schema: public; Owner: yourusername
+-- Data for Name: choices; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.choices (id, question_id, choice, true_answer) FROM stdin;
@@ -119,7 +119,7 @@ COPY public.choices (id, question_id, choice, true_answer) FROM stdin;
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: yourusername
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.users (id, login, phone_number, email, first_name, last_name, password, is_user, is_admin) FROM stdin;
@@ -134,7 +134,7 @@ COPY public.users (id, login, phone_number, email, first_name, last_name, passwo
 
 
 --
--- Data for Name: userquizsessions; Type: TABLE DATA; Schema: public; Owner: yourusername
+-- Data for Name: userquizsessions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.userquizsessions (id, user_id, question_id, session_id, question_num) FROM stdin;
@@ -708,32 +708,52 @@ COPY public.userquizsessions (id, user_id, question_id, session_id, question_num
 1153	15	5	7ec80b6d-230b-48de-b796-6a3ac4afe791	8
 1154	15	2	7ec80b6d-230b-48de-b796-6a3ac4afe791	9
 1155	15	13	7ec80b6d-230b-48de-b796-6a3ac4afe791	10
+1156	11	11	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	1
+1157	11	7	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	2
+1158	11	10	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	3
+1159	11	9	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	4
+1160	11	4	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	5
+1161	11	6	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	6
+1162	11	3	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	7
+1163	11	17	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	8
+1164	11	14	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	9
+1165	11	1	57b460f5-3c8c-44a7-8b99-0fa521c9a9e9	10
+1166	11	3	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	1
+1167	11	15	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	2
+1168	11	13	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	3
+1169	11	12	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	4
+1170	11	8	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	5
+1171	11	5	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	6
+1172	11	11	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	7
+1173	11	4	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	8
+1174	11	10	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	9
+1175	11	6	5e13ce16-a1db-4864-8bd2-4c3b91aedd5d	10
 \.
 
 
 --
--- Name: choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yourusername
+-- Name: choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.choices_id_seq', 64, true);
 
 
 --
--- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yourusername
+-- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.questions_id_seq', 17, true);
 
 
 --
--- Name: userquizsessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yourusername
+-- Name: userquizsessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userquizsessions_id_seq', 1155, true);
+SELECT pg_catalog.setval('public.userquizsessions_id_seq', 1175, true);
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: yourusername
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 15, true);
