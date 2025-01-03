@@ -1,12 +1,33 @@
 
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали */
+    min-height: 100vh; /* Задаем минимальную высоту экрана */
+}
+
+nav {
+    width: 100%; /* Делаем навигацию на всю ширину экрана */
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    z-index: 1000; /* Так расположение навбара становится фиксированным наверху */
+}
+
+.content {
+    margin-top: 80px; /* Оставляем пространство под фиксированный navbar */
+    padding: 20px;
+    width: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
 }
 
 form {
@@ -15,7 +36,7 @@ form {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
-    margin-bottom: 20px;
+    margin: 20px; /* Обеспечиваем дополнительное пространство */
 }
 
 h1 {
@@ -47,12 +68,3 @@ button {
 button:hover {
     background-color: #0056b3;
 }
-
-#logoutButton {
-    background-color: #dc3545;
-}
-
-#logoutButton:hover {
-    background-color: #c82333;
-}
-

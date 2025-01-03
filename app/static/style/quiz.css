@@ -1,14 +1,6 @@
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+.content {
+    margin-top: 60px; /* Adjust based on navbar height */
+    padding: 20px;
 }
 
 .quiz-container {
@@ -18,6 +10,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    margin: 0 auto;
 }
 
 .question {
@@ -52,12 +45,12 @@ body {
     font-size: 1.2em;
 }
 
-
 .choices li.active {
     background-color: #42aaff;
     font-weight: bold;
     border: 1px solid #0f5132;
 }
+
 .results-container {
     margin-top: 20px;
     padding: 10px;

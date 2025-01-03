@@ -7,8 +7,11 @@
     <link rel="stylesheet" type="text/css" href="/static/style/quiz.css">
 </head>
 <body>
-    <div id="quiz" class="quiz-container"></div>
-    <div id="results" class="results-container"></div>
+    {% include 'navbar.html' %}
+    <div class="content">
+        <div id="quiz" class="quiz-container"></div>
+        <div id="results" class="results-container"></div>
+    </div>
     <script src="/static/js/quiz.js"></script>
 </body>
 </html>

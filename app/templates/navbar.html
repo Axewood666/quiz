@@ -1,0 +1,32 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout Menu</title>
+    <link rel="stylesheet" type="text/css" href="/static/style/navbar.css">
+</head>
+<nav>
+    <ul class="menu">
+        <li><a href="/pages/quiz">Quiz</a></li>
+        <li><a href="/pages/register">Register</a></li>
+        <li><a href="/pages/login">Login</a></li>
+        <li><a href="#" id="logout-link">Logout</a></li>
+    </ul>
+</nav>
+<script>
+    document.getElementById("logout-link").addEventListener("click", function(event) {
+        event.preventDefault();
+
+        fetch("/auth/logout/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+            window.location.href = "/pages/login/"; // Перенаправление пользователя на страницу логина после выхода
+        })
+        .catch(error => console.error("Ошибка:", error));
+    });
+</script>

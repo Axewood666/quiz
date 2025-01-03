@@ -3,12 +3,14 @@ from jose import jwt, JWTError
 from app.config import get_auth_data
 from app.users.dao import UsersDAO
 from app.users.models import User
+from fastapi.responses import RedirectResponse
 
 
 def get_token(request: Request):
     token = request.cookies.get('users_access_token')
     if not token:
-        raise HTTPException(status_code=401, detail='Token not found')
+        redirect_response = RedirectResponse(url='/pages/login', status_code=302)
+        raise HTTPException(status_code=302, headers=redirect_response.headers)
     return token
 
 
