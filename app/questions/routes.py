@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from sqlalchemy import select, func
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from app.db import session_maker
 from app.questions.models import Question, Choice, UserQuizSession
@@ -62,21 +62,16 @@ async def check_answers(questions: List[SAnswerCheck], current_user: User = Depe
                 raise HTTPException(
                     status_code=404, detail=f"Question not found")
             if set(user_choice) != set(answers_dict[f"{question_id}"]):
-                response.append({
-                    "question": question.question,
-                    "user_choice": user_choice,
-                    "choices": [obj.choice for obj in choices],
-                    "correct_choice": answers_dict[f"{question_id}"],
-                    "is_correct": False
-                })
+                is_correct = False
             else:
-                response.append({
-                    "question": question.question,
-                    "user_choice": user_choice,
-                    "choices": [obj.choice for obj in choices],
-                    "correct_choice": answers_dict[f"{question_id}"],
-                    "is_correct": True
-                })
+                is_correct = True
+            response.append({
+                "question": question.question,
+                "user_choice": user_choice,
+                "choices": [obj.choice for obj in choices],
+                "correct_choice": answers_dict[f"{question_id}"],
+                "is_correct": is_correct
+            })
         return response
 
 

@@ -1,7 +1,6 @@
 import uuid
 from typing import List
 
-from app.questions.models import UserQuizSession
 from app.questions.schemas import SQuizAdd
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import HTTPException

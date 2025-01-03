@@ -1,4 +1,3 @@
-from sqlalchemy.orm import Session
 from app.db import session_maker
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import or_, select, delete
