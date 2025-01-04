@@ -6,8 +6,13 @@ ENV TZ=Europe/Moscow
 RUN apt-get -yqq update && \
     apt-get -yqq install python3-pip python3-dev libpq-dev build-essential postgresql-client
 
-ADD ./ /opt/quiz
 WORKDIR /opt/quiz
+ADD ./app /opt/quiz/app
+ADD ./.env /opt/quiz
+ADD ./alembic.ini /opt/quiz
+ADD ./requirements.txt /opt/quiz
+ADD ./docker_utils/data_only_backup.sql /opt/quiz
+
 
 RUN pip install --no-cache-dir -r requirements.txt --break-system-packages
 
@@ -21,5 +26,5 @@ CMD sh -c '\
     done; \
     echo "Database is up - continuing"; \
     alembic upgrade head && \
-    PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -p $DB_PORT -f ./docker_utils/data_only_backup.sql && \
+    PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -p $DB_PORT -f data_only_backup.sql && \
     uvicorn app.main:app --host 0.0.0.0 --port 8000'
