@@ -2,12 +2,13 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.15 (Debian 14.15-1.pgdg120+1)
--- Dumped by pg_dump version 14.15 (Debian 14.15-1.pgdg120+1)
+-- Dumped from database version 17.2 (Ubuntu 17.2-1.pgdg24.04+1)
+-- Dumped by pg_dump version 17.2 (Ubuntu 17.2-1.pgdg24.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -21,7 +22,7 @@ SET row_security = off;
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-97edcb57f00b
+fdda3c97181a
 \.
 
 
@@ -46,6 +47,9 @@ COPY public.questions (id, question) FROM stdin;
 14	Как зовут главного героя в аниме My Hero Academia, который наследует силу Все-Могущего?
 15	Как называют скрытое сообщество в аниме Bleach, контролирующее порядок душ?
 17	string
+33	Sosal?
+34	Как зовут главного героя аниме "Покемон"?
+35	В каком аниме фигурируют титаны?
 \.
 
 
@@ -115,6 +119,15 @@ COPY public.choices (id, question_id, choice, true_answer) FROM stdin;
 61	15	Шинигами	f
 62	15	Северное Братство	f
 64	17	string	t
+77	33	Da	t
+78	33	Sosal	f
+79	33	Konesh	f
+80	34	Брок	f
+81	34	Эш	t
+82	34	Джеймс	f
+83	35	Атака титанов	t
+84	35	Мастера меча онлайн	f
+85	35	Синий экзорцист	f
 \.
 
 
@@ -122,14 +135,47 @@ COPY public.choices (id, question_id, choice, true_answer) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, login, phone_number, email, first_name, last_name, password, is_user, is_admin) FROM stdin;
-1	axewood	89179341111	user@example.com	Igor	Zhug	$2b$12$sLXaGd0jqfuhWCx3ZVkfBelTvVdFFpizmHtGwbvt8yLqCFB3LGPwu	t	f
-10	axewood1	string1	user1@example.com	string1	string1	$2b$12$KZ5r.6aJRqmpeIjPy//JGuo3eadr/R6xxea9wklQKkPqeUyEjpOku	f	t
-11	qwe	89179342222	qwe@mail.ru	Игорь	Жугар	$2b$12$yjlGmgbqjCPHrBvp4/aSqujZOEwvtBitsTIEHxPiRmFRVabKq8EbK	t	f
-12	qwe12	89179342221	qwe12@mail.ru	Игорь	Жугар	$2b$12$mJ5z6p3TaqxPY/bTHVzbq.FE9jF8knTxozxsa0XOyuYi3YHPCfpJq	t	f
-13	qwe122	891793422211	qwe122@mail.ru	Игорь	Жугар	$2b$12$6lnc8IQhmfK9JquyN2.DPutkXtq1ZMQu6q4RRyEVAeXa.JrS8iGw2	t	f
-14	qwe1223	8917934222112	qwe1232@mail.ru	Игорь	Жугар	$2b$12$E1S3DlpOt2omWdt8KNj7XO7TfLBYtqvl81L6tFZoACZp0NwKq8izC	t	f
-15	test_user	89179349211	testuser@mail.ru	Lala	Blabla	$2b$12$HNvPf2xWG0Gf9bXy/Go9JeLi7eokhYzlGIfVo/UHUCCYrME5CnOJS	t	f
+COPY public.users (id, phone_number, first_name, last_name, password, is_user, is_admin, login, email) FROM stdin;
+34	89179349242	Axewood	Axewood	$2b$12$dtgEKPEPuRdc2HhmVndZ6eSJ4XWbNpu5QnxkxuKzBt5netGn5Y16C	f	t	axewood	axewood@mail.ru
+35	89179349243	Axewood	Axewood	$2b$12$LbHBcESeLh6QIQdj.0naiuB4oBEjGzAyTTXqCx0fqvNZfmFdLO36m	t	f	axewood1	axewood1@mail.ru
+\.
+
+
+--
+-- Data for Name: useranswers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.useranswers (id, user_id, question_id) FROM stdin;
+46	34	35
+47	34	15
+48	34	6
+49	34	34
+50	34	3
+51	34	2
+52	34	33
+53	34	1
+54	34	11
+55	34	14
+56	34	17
+57	34	12
+58	34	9
+59	34	13
+60	34	5
+61	34	4
+62	34	8
+63	34	7
+64	35	12
+65	35	2
+66	35	11
+67	35	35
+68	35	14
+69	35	3
+70	35	17
+71	35	4
+72	35	10
+73	35	15
+74	35	7
+75	35	5
 \.
 
 
@@ -138,16 +184,14 @@ COPY public.users (id, login, phone_number, email, first_name, last_name, passwo
 --
 
 COPY public.userquizsessions (id, user_id, question_id, session_id, question_num) FROM stdin;
-1156	11	12	56464ee2-582c-44c9-bbfe-f59a6bfddd28	1
-1157	11	4	56464ee2-582c-44c9-bbfe-f59a6bfddd28	2
-1158	11	6	56464ee2-582c-44c9-bbfe-f59a6bfddd28	3
-1159	11	1	56464ee2-582c-44c9-bbfe-f59a6bfddd28	4
-1160	11	15	56464ee2-582c-44c9-bbfe-f59a6bfddd28	5
-1161	11	14	56464ee2-582c-44c9-bbfe-f59a6bfddd28	6
-1162	11	13	56464ee2-582c-44c9-bbfe-f59a6bfddd28	7
-1163	11	11	56464ee2-582c-44c9-bbfe-f59a6bfddd28	8
-1164	11	3	56464ee2-582c-44c9-bbfe-f59a6bfddd28	9
-1165	11	7	56464ee2-582c-44c9-bbfe-f59a6bfddd28	10
+3071	35	33	eefd2be4-b706-4ffe-8e49-f302579d4e25	1
+3072	35	6	eefd2be4-b706-4ffe-8e49-f302579d4e25	2
+3073	35	8	eefd2be4-b706-4ffe-8e49-f302579d4e25	3
+3074	35	1	eefd2be4-b706-4ffe-8e49-f302579d4e25	4
+3075	35	13	eefd2be4-b706-4ffe-8e49-f302579d4e25	5
+3076	35	9	eefd2be4-b706-4ffe-8e49-f302579d4e25	6
+3077	35	34	eefd2be4-b706-4ffe-8e49-f302579d4e25	7
+3084	34	10	0f676e65-0f52-4c41-85d2-54c1a2031a13	1
 \.
 
 
@@ -155,28 +199,35 @@ COPY public.userquizsessions (id, user_id, question_id, session_id, question_num
 -- Name: choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.choices_id_seq', 64, true);
+SELECT pg_catalog.setval('public.choices_id_seq', 86, true);
 
 
 --
 -- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.questions_id_seq', 17, true);
+SELECT pg_catalog.setval('public.questions_id_seq', 36, true);
+
+
+--
+-- Name: useranswers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.useranswers_id_seq', 75, true);
 
 
 --
 -- Name: userquizsessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userquizsessions_id_seq', 1165, true);
+SELECT pg_catalog.setval('public.userquizsessions_id_seq', 3084, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 15, true);
+SELECT pg_catalog.setval('public.users_id_seq', 35, true);
 
 
 --
