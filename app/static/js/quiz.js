@@ -13,10 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const quizData = await response.json();
             renderQuiz(quizData, quizContainer);
 
-            const submitButton = document.createElement('button');
-            submitButton.textContent = 'Submit Answers';
-            submitButton.addEventListener('click', () => submitAnswers(quizData));
-            quizContainer.appendChild(submitButton);
+        addButtons(quizData)
         } else {
             quizContainer.innerHTML = '<p class="error">Error fetching quiz data.</p>';
         }
@@ -39,6 +36,7 @@ function renderQuiz(quizData, container) {
         item.Choices.forEach(choice => {
             const choiceItem = document.createElement('li');
             choiceItem.textContent = choice;
+            choicesList.classList.add('choices');
 
             choiceItem.addEventListener('click', () => {
                 const siblings = choiceItem.parentNode.children;
@@ -77,6 +75,7 @@ function submitAnswers(quizData) {
     .then(response => response.json())
     .then(data => {
         renderResults(data);
+
     })
     .catch(error => {
         console.error('Error submitting answers:', error);
@@ -84,53 +83,78 @@ function submitAnswers(quizData) {
 }
 
 function renderResults(results) {
-    const resultsContainer = document.getElementById('results');
+    const resultsContainer = document.getElementById('quiz');
     resultsContainer.innerHTML = '';
+
 
     results.forEach(result => {
         const resultElement = document.createElement('div');
         resultElement.classList.add('result');
 
+        const iconElement = document.createElement('span');
+        iconElement.classList.add('result-icon');
+        iconElement.textContent = result.is_correct ? '✔️' : '❌';
+        resultElement.appendChild(iconElement);
+
+        const contentElement = document.createElement('div');
+
         const questionElement = document.createElement('h3');
         questionElement.textContent = result.question;
-        resultElement.appendChild(questionElement);
+        contentElement.appendChild(questionElement);
 
         const userChoiceElement = document.createElement('p');
         userChoiceElement.textContent = `Ваш выбор: ${result.user_choice.join(', ')}`;
-        resultElement.appendChild(userChoiceElement);
+        contentElement.appendChild(userChoiceElement);
 
         const correctChoiceElement = document.createElement('p');
         correctChoiceElement.textContent = `Правильный ответ: ${result.correct_choice.join(', ')}`;
-        resultElement.appendChild(correctChoiceElement);
+        contentElement.appendChild(correctChoiceElement);
 
         const isCorrectElement = document.createElement('p');
         isCorrectElement.textContent = result.is_correct ? 'Ваш ответ правильный!' : 'Ваш ответ неверный.';
-        isCorrectElement.style.color = result.is_correct ? 'green' : 'red';
-        resultElement.appendChild(isCorrectElement);
+        isCorrectElement.classList.add(result.is_correct ? 'correct' : 'incorrect');
+        contentElement.appendChild(isCorrectElement);
 
+        resultElement.appendChild(contentElement);
         resultsContainer.appendChild(resultElement);
     });
+
+    addButtons()
 }
 
 
-    document.getElementById('refresh-btn').addEventListener('click', function() {
-        fetch('/quiz/get-quiz?refresh_session=true')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                const quizContainer = document.getElementById('quiz');
-                quizContainer.innerHTML = '';
-                renderQuiz(data, quizContainer);
-                 const submitButton = document.createElement('button');
-                submitButton.textContent = 'Submit Answers';
-                submitButton.addEventListener('click', () => submitAnswers(quizData));
-                quizContainer.appendChild(submitButton);
-            })
-            .catch(error => console.error('Ошибка при обновлении вопросов:', error));
-    });
+function refresh_quiz() {
+    fetch('/quiz/get-quiz?refresh_session=true')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            const quizContainer = document.getElementById('quiz');
+            quizContainer.innerHTML = '';
+            renderQuiz(data, quizContainer);
+            addButtons(data)
 
+        })
+        .catch(error => console.error('Ошибка при обновлении вопросов:', error));
+}
+
+function addButtons(data = null){
+    const quizContainer = document.getElementById('quiz');
+    if (data) {
+        const submitButton = document.createElement('button');
+        submitButton.textContent = 'Submit Answers';
+        submitButton.classList.add('button');
+        submitButton.addEventListener('click', () => submitAnswers(data));
+        quizContainer.appendChild(submitButton);
+    }
+    const refreshButton = document.createElement('button');
+    refreshButton.textContent = 'Refresh Answers';
+    refreshButton.classList.add('button');
+    refreshButton.classList.add('refresh-btn');
+    refreshButton.addEventListener('click', () => refresh_quiz());
+    quizContainer.appendChild(refreshButton);
+}

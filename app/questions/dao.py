@@ -10,7 +10,7 @@ from app.dao.base import BaseDAO
 from app.users.models import User
 from app.questions.models import UserQuizSession, Choice, Question, UserAnswer
 from sqlalchemy.orm import joinedload, selectinload
-
+from random import shuffle
 
 class QuizSessionDAO(BaseDAO):
     model = UserQuizSession
@@ -76,6 +76,8 @@ class QuizSessionDAO(BaseDAO):
                          "Question": question.question,
                          "Choices": [choice.choice for choice in question.choices]}
                         for i, question in enumerate(quiz_questions)]
+                for question in quiz:
+                    shuffle(question["Choices"])
                 return quiz
             return None
 
