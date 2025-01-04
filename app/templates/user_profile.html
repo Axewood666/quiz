@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Answers</title>
+    <link rel="stylesheet" type="text/css" href="/static/style/style.css">
+    <style>
+        .header {
+            text-align: center;
+            margin: 15px auto;
+            padding: 15px;
+            max-width: 1000px;
+            background-color: #3f51b5;
+            color: white;
+            border-radius: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .result {
+            background-color: #ffffff;
+            max-width: 800px;
+            border: 3px solid #ddd;
+            padding: 20px;
+            margin: 10px auto;
+            border-radius: 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .result:hover {
+            transform: scale(1.02);
+        }
+        .question {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .correct-answers {
+            color: #4CAF50;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+    <div class="header">
+        <h1>История ответов</h1>
+    </div>
+    <div id="quiz"></div>
+
+    <script>
+        async function fetchQuizAnswers() {
+            try {
+                const response = await fetch('/quiz/get-user-answers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                const resultsContainer = document.getElementById('quiz');
+                resultsContainer.innerHTML = '';
+
+                data.forEach(result => {
+                    const resultElement = document.createElement('div');
+                    resultElement.classList.add('result');
+
+                    const questionElement = document.createElement('div');
+                    questionElement.classList.add('question');
+                    questionElement.textContent = result.question;
+
+                    const correctAnswersElement = document.createElement('div');
+                    correctAnswersElement.classList.add('correct-answers');
+                    let answer = 'Нет данных';
+                    if (result.correct_answers) {
+                        if (result.correct_answers.length === 1) {
+                            answer = `Ответ: <strong>${result.correct_answers[0]}</strong>`;
+                        } else {
+                            answer = `Ответы: <strong>${result.correct_answers.join(', ')}</strong>`;
+                        }
+                    }
+                    correctAnswersElement.innerHTML = answer;
+
+
+                    resultElement.appendChild(questionElement);
+                    resultElement.appendChild(correctAnswersElement);
+                    resultsContainer.appendChild(resultElement);
+                });
+            } catch (error) {
+                console.error('Ошибка при получении данных:', error);
+            }
+        }
+
+        fetchQuizAnswers();
+    </script>
+</body>
+</html>

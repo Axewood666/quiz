@@ -11,9 +11,10 @@ router_auth = APIRouter(prefix='/auth', tags=['Auth'])
 
 @router_auth.post("/register/")
 async def register_user(user_data: SUserRegister, response: Response) -> dict:
-    for field_name, column in UsersDAO.unique_fields.items():
+    for field_name, column in User.unique_fields.items():
         value = getattr(user_data, field_name, None)
         if value:
+            value = str(value).lower()
             is_not_uniq = await UsersDAO.check_uniq(column, value)
             if is_not_uniq:
                 raise HTTPException(

@@ -28,12 +28,12 @@ function renderQuiz(quizData, container) {
         questionElement.classList.add('question');
 
         const questionText = document.createElement('h3');
-        questionText.textContent = `Question ${item.question_num}: ${item.Question}`;
+        questionText.textContent = `Question ${item.question_num}: ${item.question}`;
         questionElement.appendChild(questionText);
 
         const choicesList = document.createElement('ul');
         choicesList.classList.add('choices');
-        item.Choices.forEach(choice => {
+        item.choices.forEach(choice => {
             const choiceItem = document.createElement('li');
             choiceItem.textContent = choice;
             choicesList.classList.add('choices');

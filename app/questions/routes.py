@@ -6,17 +6,18 @@ from sqlalchemy.orm import joinedload
 
 from app.db import session_maker
 from app.questions.models import Question, Choice, UserQuizSession, UserAnswer
-from typing import List, Optional
-from app.questions.schemas import SAnswerCheck, SQuizAdd
+from app.questions.schemas import SAnswerCheck, SQuizAdd, SVerifiableAnswer, SAnswer, SQuizWithSession
 from app.users.dependicies import current_user_is_admin, get_current_user
 from app.users.models import User
 from app.questions.dao import QuizSessionDAO, ChoiceDAO, QuestionDAO
+from typing import List, Optional
 
-router_questions = APIRouter(prefix='/quiz')
+router_questions = APIRouter(prefix='/quiz', tags=['Quiz'])
 
 
 @router_questions.get("/get-quiz")
-async def get_rand_quiz(current_user: User = Depends(get_current_user), refresh_session: Optional[str] = None):
+async def get_rand_quiz(current_user: User = Depends(get_current_user), refresh_session: Optional[str] = None) -> List[
+    SQuizWithSession]:
     user_session = await QuizSessionDAO.get_user_session(current_user)
     if refresh_session == "true" and user_session:
         if not await QuizSessionDAO.remove_session(current_user):
@@ -37,7 +38,8 @@ async def get_rand_quiz(current_user: User = Depends(get_current_user), refresh_
 
 
 @router_questions.post("/check")
-async def check_answers(questions: List[SAnswerCheck], current_user: User = Depends(get_current_user)):
+async def check_answers(questions: List[SAnswerCheck], current_user: User = Depends(get_current_user)) -> List[
+    SVerifiableAnswer]:
     async with session_maker() as session:
         query = (
             select(UserQuizSession)
@@ -61,7 +63,7 @@ async def check_answers(questions: List[SAnswerCheck], current_user: User = Depe
 
         user_choice_dict = {
             str(await QuizSessionDAO.get_id_by_num(
-                session_id=questions[0].session_id,
+                session_id=question.session_id,
                 question_num=question.question_num
             )): question.choice for question in questions
         }
@@ -75,15 +77,14 @@ async def check_answers(questions: List[SAnswerCheck], current_user: User = Depe
                 raise HTTPException(
                     status_code=404, detail=f"Question not found")
             is_correct = set(user_choice) == set(answers_dict[f"{question_id}"])
-            response.append({
-                "question": question.question,
-                "user_choice": user_choice,
-                "choices": [obj.choice for obj in choices],
-                "correct_choice": answers_dict[f"{question_id}"],
-                "is_correct": is_correct
-            })
+            response.append(SVerifiableAnswer(
+                question=question.question,
+                user_choice=user_choice,
+                choices=[obj.choice for obj in choices],
+                correct_choice=answers_dict[f"{question_id}"],
+                is_correct=is_correct))
             if is_correct:
-                user_answers.append(UserAnswer(question_id=int(question_id),user_id=current_user.id))
+                user_answers.append(UserAnswer(question_id=int(question_id), user_id=current_user.id))
         try:
             query = delete(UserQuizSession).filter_by(session_id=questions[0].session_id)
             remove = await session.execute(query)
@@ -92,14 +93,30 @@ async def check_answers(questions: List[SAnswerCheck], current_user: User = Depe
                 await session.commit()
             else:
                 session.rollback()
-                HTTPException(status_code=404, detail="Failed to bd connect, try again")
+                HTTPException(status_code=404, detail="Failed to process your answers, try again")
         except SQLAlchemyError:
             HTTPException(status_code=404, detail="Failed on validate answers, try again")
 
         return response
 
 
-@router_questions.post("/add")
+@router_questions.post("/get-user-answers")
+async def get_user_answers(current_user: User = Depends(get_current_user)) -> List[SAnswer]:
+    async with session_maker() as session:
+        query = select(UserAnswer).filter_by(user_id=current_user.id)
+        result = await session.execute(query)
+        user_answers = result.scalars().all()
+        if not user_answers:
+            raise HTTPException(status_code=404, detail=f"User answers not found")
+        answers = []
+        for answer in user_answers:
+            question = await QuestionDAO.find_one_or_none(id=int(answer.question_id))
+            correct_answer = await ChoiceDAO.find_all(question_id=int(answer.question_id), true_answer=True)
+            answers.append(SAnswer(question=question.question, correct_answers=[el.choice for el in correct_answer]))
+        return answers
+
+
+@router_questions.post("/admin/add")
 async def add_questions_from_json(questions: List[SQuizAdd], current_user=Depends(current_user_is_admin)):
     async with session_maker() as session:
         try:

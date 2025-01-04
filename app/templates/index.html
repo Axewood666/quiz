@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="/static/style/style.css">
     <link rel="stylesheet" type="text/css" href="/static/style/auth.css">
     <style>
         body {
@@ -44,10 +45,22 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to MY HARD QUIZ, SLAVE</h1>
+        <h1>Welcome to MY HARD QUIZ, SLAVE {% if user %} {% print(user.login) %} {% endif %}</h1>
+        {% if not user %}
         <button onclick="window.location.href='/pages/login'">Login</button>
         <button onclick="window.location.href='/pages/register'">Register</button>
+        {% endif %}
+        {% if user %}
         <button onclick="window.location.href='/pages/quiz'">Quiz</button>
+        <button onclick="window.location.href='/pages/user-profile'">Profile</button>
+        {% if user.is_admin %}
+        <button onclick="window.location.href='/pages/admin/add-questions'">Add questions</button>
+        {% endif %}
+        <button id="logout-link">Logout</button>
+        {% endif %}
     </div>
+{% if user %}
+<script src="/static/js/logout.js"> </script>
+{% endif %}
 </body>
 </html>

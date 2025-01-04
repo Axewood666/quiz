@@ -9,6 +9,7 @@ from app.db import session_maker
 from app.dao.base import BaseDAO
 from app.users.models import User
 from app.questions.models import UserQuizSession, Choice, Question, UserAnswer
+from app.questions.schemas import SQuizWithSession
 from sqlalchemy.orm import joinedload, selectinload
 from random import shuffle
 
@@ -51,14 +52,14 @@ class QuizSessionDAO(BaseDAO):
                 result = await session.execute(query)
                 quiz_question = result.scalar_one_or_none()
                 if quiz_question:
-                    quiz.append({"session_id": el.session_id,
-                                 "question_num": el.question_num,
-                                 "Question": quiz_question.question,
-                                 "Choices": [choice.choice for choice in quiz_question.choices]})
+                    quiz.append(SQuizWithSession(session_id=el.session_id,
+                                             question_num=el.question_num,
+                                             question=quiz_question.question,
+                                             choices=[choice.choice for choice in quiz_question.choices]))
                     for question in quiz:
-                        shuffle(question["Choices"])
+                        shuffle(question.choices)
                 else:
-                    return None
+                    raise HTTPException(status_code=404, detail="Can't get session")
             return quiz
 
     @classmethod
@@ -73,15 +74,15 @@ class QuizSessionDAO(BaseDAO):
             quiz_questions = result.scalars().unique().all()
             session_id = await QuizSessionDAO.add_quiz_session(current_user=current_user, quiz_questions=quiz_questions)
             if session_id:
-                quiz = [{"session_id": session_id,
-                         "question_num": i + 1,
-                         "Question": question.question,
-                         "Choices": [choice.choice for choice in question.choices]}
+                quiz = [SQuizWithSession(session_id=session_id,
+                                         question_num=i + 1,
+                                         question=question.question,
+                                         choices=[choice.choice for choice in question.choices])
                         for i, question in enumerate(quiz_questions)]
                 for question in quiz:
-                    shuffle(question["Choices"])
+                    shuffle(question.choices)
                 return quiz
-            return None
+            raise HTTPException(status_code=404, detail="Error in create quiz")
 
     @classmethod
     async def remove_session(cls, current_user: User):

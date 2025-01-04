@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if(response.ok){
-                window.location.href = "/pages/quiz";
+                window.location.href = "/";
             }else{
                 const errorData = await response.json();
                 alert(errorData.detail);
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
            const data = await response.json();
             if (response.ok) {
-                window.location.href = "/pages/quiz";
+                window.location.href = "/";
             } else {
                 alert(data.detail);
             }

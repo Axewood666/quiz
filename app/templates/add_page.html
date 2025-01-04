@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавление вопросов для квиза</title>
+        <link rel="stylesheet" type="text/css" href="/static/style/style.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
         .question-container {
             margin-bottom: 20px;
             padding: 10px;
@@ -18,7 +15,7 @@
     </style>
 </head>
 <body>
-
+{% include 'navbar.html' %}
 <h1>Добавление вопросов для квиза</h1>
 
 <div id="questions-container">
@@ -48,7 +45,7 @@
     try {
         const questions = JSON.parse(jsonInput);
 
-        const response = await fetch('/quiz/add', {
+        const response = await fetch('/quiz/admin/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -110,7 +107,7 @@
         });
 
         try {
-            const response = await fetch('/quiz/add', {
+            const response = await fetch('/quiz/admin/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
