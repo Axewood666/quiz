@@ -55,6 +55,8 @@ class QuizSessionDAO(BaseDAO):
                                  "question_num": el.question_num,
                                  "Question": quiz_question.question,
                                  "Choices": [choice.choice for choice in quiz_question.choices]})
+                    for question in quiz:
+                        shuffle(question["Choices"])
                 else:
                     return None
             return quiz
