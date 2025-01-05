@@ -22,7 +22,7 @@ SET row_security = off;
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-fdda3c97181a
+dbd9176e0e38
 \.
 
 
@@ -46,10 +46,25 @@ COPY public.questions (id, question) FROM stdin;
 13	Что является источником силы Гонга Фрикса в аниме Hunter x Hunter?
 14	Как зовут главного героя в аниме My Hero Academia, который наследует силу Все-Могущего?
 15	Как называют скрытое сообщество в аниме Bleach, контролирующее порядок душ?
-17	string
 33	Sosal?
 34	Как зовут главного героя аниме "Покемон"?
 35	В каком аниме фигурируют титаны?
+47	Какое аниме рассказывает о волейбольной команде старшей школы Карасуно?
+48	Как называется аниме, где главный герой хочет стать Хокаге?
+49	В каком аниме главный герой использует тетрадь смерти?
+50	Какое аниме рассказывает о приключениях пиратов в поисках легендарного сокровища?
+51	В каком аниме главный герой может превращаться в гигантского человекоподобного монстра?
+55	Какое аниме рассказывает о девушке, которая может видеть связующие людей нити судьбы?
+56	В каком аниме главный герой является полудемоном и владеет мечом, разрушающим демонов?
+57	Какое аниме рассказывает о школьнике, который может управлять гравитацией?
+58	В каком аниме главная героиня является полуяпонкой и полуангличанкой и работает горничной в богатом поместье?
+59	Какое аниме рассказывает о группе друзей, которые создают собственную компанию по разработке видеоигр?
+60	Какое аниме рассказывает о девушке, которая может видеть линии жизни людей?
+67	Какое аниме рассказывает о девушке, которая может путешествовать между реальным миром и миром духов?
+68	В каком аниме главный герой является членом элитного отряда по борьбе с вампирами?
+69	Какое аниме рассказывает о людях, выживающих в постапокалиптическом мире, населённом гигантскими насекомыми?
+70	В каком аниме главная героиня работает в индустрии аниме и сталкивается с трудностями создания аниме-сериалов?
+71	Какое аниме рассказывает о мальчике, который может превращаться в девочку-волшебницу?
 \.
 
 
@@ -118,7 +133,6 @@ COPY public.choices (id, question_id, choice, true_answer) FROM stdin;
 60	15	Химерасантос	f
 61	15	Шинигами	f
 62	15	Северное Братство	f
-64	17	string	t
 77	33	Da	t
 78	33	Sosal	f
 79	33	Konesh	f
@@ -128,6 +142,70 @@ COPY public.choices (id, question_id, choice, true_answer) FROM stdin;
 83	35	Атака титанов	t
 84	35	Мастера меча онлайн	f
 85	35	Синий экзорцист	f
+105	47	Haikyuu!!	t
+106	47	Kuroko no Basuke	f
+107	47	Free!	f
+108	47	Yuri!!! on Ice	f
+109	48	One Piece	f
+110	48	Naruto	t
+111	48	Bleach	f
+112	48	Dragon Ball	f
+113	49	Death Note	t
+114	49	Code Geass	f
+115	49	Mirai Nikki	f
+116	49	Death Parade	f
+117	50	Naruto	f
+118	50	Fairy Tail	f
+119	50	One Piece	t
+120	50	Black Clover	f
+121	51	Tokyo Ghoul	f
+122	51	Attack on Titan	t
+123	51	Parasyte	f
+124	51	Boku no Hero Academia	f
+125	55	Kimi no Na wa	f
+126	55	Ao Haru Ride	f
+127	55	Kimi no Suizou wo Tabetai	f
+128	55	Koi wa Ameagari no You ni	t
+129	56	Demon Slayer: Kimetsu no Yaiba	t
+130	56	Noragami	f
+131	56	Blue Exorcist	f
+132	56	Inuyasha	f
+133	57	Charlotte	f
+134	57	Mob Psycho 100	f
+135	57	The Disastrous Life of Saiki K.	f
+136	57	Kiseijuu: Sei no Kakuritsu	t
+137	58	Kaichou wa Maid-sama!	f
+138	58	Violet Evergarden	f
+139	58	Emma: A Victorian Romance	t
+140	58	Akagami no Shirayuki-hime	f
+141	59	New Game!	t
+142	59	Shirobako	f
+143	59	Bakuman	f
+144	59	Saenai Heroine no Sodatekata	f
+145	60	Иная	f
+146	60	Токийский гуль	f
+147	60	Проект воспитания девочек-волшебниц	t
+148	60	Когда плачут цикады	f
+149	67	Унесённые призраками	t
+150	67	Мастер муси	f
+151	67	Тетрадь дружбы Нацумэ	f
+152	67	Невиданный цветок	f
+153	68	Тёмный дворецкий	f
+154	68	Ванпанчмен	f
+155	68	Рыцарь-вампир	f
+156	68	Проект воспитания девочек-волшебниц	t
+157	69	Атака титанов	f
+158	69	Кабанэри железной крепости	f
+159	69	Семь смертных грехов	f
+160	69	Рыцари Сидонии	t
+161	70	Дотянуться до тебя	f
+162	70	Белый альбом	f
+163	70	Гармония	f
+164	70	Ширабако	t
+165	71	Фейри Тейл	f
+166	71	Мадока	f
+167	71	Забавы богов	t
+168	71	Индекс волшебства	f
 \.
 
 
@@ -156,7 +234,6 @@ COPY public.useranswers (id, user_id, question_id) FROM stdin;
 53	34	1
 54	34	11
 55	34	14
-56	34	17
 57	34	12
 58	34	9
 59	34	13
@@ -170,7 +247,6 @@ COPY public.useranswers (id, user_id, question_id) FROM stdin;
 67	35	35
 68	35	14
 69	35	3
-70	35	17
 71	35	4
 72	35	10
 73	35	15
@@ -191,7 +267,7 @@ COPY public.userquizsessions (id, user_id, question_id, session_id, question_num
 3075	35	13	eefd2be4-b706-4ffe-8e49-f302579d4e25	5
 3076	35	9	eefd2be4-b706-4ffe-8e49-f302579d4e25	6
 3077	35	34	eefd2be4-b706-4ffe-8e49-f302579d4e25	7
-3084	34	10	0f676e65-0f52-4c41-85d2-54c1a2031a13	1
+3086	34	10	0d8177fa-5109-46b1-aa5d-0d9960b85c57	2
 \.
 
 
@@ -199,14 +275,14 @@ COPY public.userquizsessions (id, user_id, question_id, session_id, question_num
 -- Name: choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.choices_id_seq', 86, true);
+SELECT pg_catalog.setval('public.choices_id_seq', 168, true);
 
 
 --
 -- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.questions_id_seq', 36, true);
+SELECT pg_catalog.setval('public.questions_id_seq', 71, true);
 
 
 --
@@ -220,7 +296,7 @@ SELECT pg_catalog.setval('public.useranswers_id_seq', 75, true);
 -- Name: userquizsessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userquizsessions_id_seq', 3084, true);
+SELECT pg_catalog.setval('public.userquizsessions_id_seq', 3086, true);
 
 
 --

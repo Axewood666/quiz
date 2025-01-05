@@ -122,14 +122,17 @@ async def add_questions_from_json(questions: List[SQuizAdd], current_user=Depend
         try:
             for q_data in questions:
                 question = Question(question=q_data.question)
-                session.add(question)
-                await session.flush()
-                choices = [
-                    Choice(choice=c.choice, true_answer=c.true_answer, question_id=question.id)
-                    for c in q_data.Choices
-                ]
-                session.add_all(choices)
-            await session.commit()
+                try:
+                    session.add(question)
+                    await session.flush()
+                    choices = [
+                        Choice(choice=c.choice, true_answer=c.true_answer, question_id=question.id)
+                        for c in q_data.choices
+                    ]
+                    session.add_all(choices)
+                    await session.commit()
+                except SQLAlchemyError:
+                    continue
             return {"message": "Questions added successfully"}
         except SQLAlchemyError as e:
             await session.rollback()

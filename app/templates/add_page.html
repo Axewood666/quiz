@@ -37,9 +37,9 @@
 <p>Введите вопросы в формате JSON:</p>
 <textarea id="json-input" rows="20" cols="60"></textarea>
 
-<button onclick="submitQuestions()">Отправить вопросы</button>
+<button onclick="submitJsonQuestions()">Отправить вопросы</button>
 <script>
-    async function submitQuestions() {
+    async function submitJsonQuestions() {
     const jsonInput = document.getElementById('json-input').value;
 
     try {
@@ -103,7 +103,7 @@
                 choice: cElement.querySelector('input[type="text"]').value,
                 true_answer: cElement.querySelector('.true-answer-checkbox').checked
             }));
-            return { question: questionText, Choices: choices };
+            return { question: questionText, choices: choices };
         });
 
         try {

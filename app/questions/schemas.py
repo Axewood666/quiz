@@ -10,7 +10,7 @@ class Choice(BaseModel):
 
 class SQuizAdd(BaseModel):
     question: str = Field(..., description="Текст вопроса")
-    Choices: List[Choice] = Field(..., description="Список вариантов ответа")
+    choices: List[Choice] = Field(..., description="Список вариантов ответа")
 
 
 class SQuizWithSession(BaseModel):
