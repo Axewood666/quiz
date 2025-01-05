@@ -29,9 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if(response.ok){
                 window.location.href = "/";
-            }else{
+            }else {
                 const errorData = await response.json();
-                alert(errorData.detail);
+
+                if (response.status === 422) {
+                    alert("Ошибка валидации: " + errorData.detail.map(error => error.msg));
+                } else {
+                    alert("Произошла ошибка: " + errorData.message || "Неизвестная ошибка");
+                }
             }
         });
     }
@@ -58,7 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 window.location.href = "/";
             } else {
-                alert(data.detail);
+                const errorData = await response.json();
+
+                if (response.status === 422) {
+                    alert("Ошибка валидации: " + errorData.detail.map(error => error.msg));
+                } else {
+                    alert("Произошла ошибка: " + errorData.message || "Неизвестная ошибка");
+                }
             }
         });
     }
@@ -69,9 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/auth/logout/', {
                 method: 'POST',
             });
-
-            const data = await response.json();
-            alert(data.message);
         });
     }
 });
