@@ -43,7 +43,8 @@ async def get_current_user(token: str = Depends(get_token)):
         auth_data = get_auth_data()
         payload = jwt.decode(token, auth_data['secret_key'], algorithms=[auth_data['algorithm']])
     except JWTError:
-        raise HTTPException(status_code=401, detail='Token is invalid!')
+        redirect_response = RedirectResponse(url='/', status_code=302)
+        raise HTTPException(status_code=302, headers=redirect_response.headers)
 
     user_id = payload.get('sub')
     if not user_id:
